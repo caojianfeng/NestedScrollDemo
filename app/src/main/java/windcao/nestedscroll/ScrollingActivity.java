@@ -1,17 +1,23 @@
 package windcao.nestedscroll;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import me.dkzwm.widget.srl.RefreshingListenerAdapter;
+import me.dkzwm.widget.srl.SmoothRefreshLayout;
 
 public class ScrollingActivity extends AppCompatActivity {
+
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,21 @@ public class ScrollingActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SectionAdapter());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        final SmoothRefreshLayout refreshLayout = (SmoothRefreshLayout) findViewById(R.id.refresher);
+        refreshLayout.setEnableKeepRefreshView(true);
+        refreshLayout.setDisableLoadMore(false);
+        refreshLayout.setOnRefreshListener(new RefreshingListenerAdapter() {
+            @Override
+            public void onRefreshBegin(boolean isRefresh) {
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.refreshComplete();
+                    }
+                }, 4000);
+            }
+        });
 
     }
 

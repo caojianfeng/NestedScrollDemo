@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
+
 import me.dkzwm.widget.srl.RefreshingListenerAdapter;
 import me.dkzwm.widget.srl.SmoothRefreshLayout;
 
@@ -42,6 +44,13 @@ public class ScrollingActivity extends AppCompatActivity {
         recyclerView.setAdapter(new SectionAdapter());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        final SectionAdapter adapter = new SectionAdapter();
+        // Add the sticky headers decoration
+        final StickyRecyclerHeadersDecoration headersDecor = new StickyRecyclerHeadersDecoration(adapter);
+        recyclerView.addItemDecoration(headersDecor);
+
+        // Add decoration for dividers between list items
+//        recyclerView.addItemDecoration(new DividerDecoration(this));
 
         final SmoothRefreshLayout refreshLayout = (SmoothRefreshLayout) findViewById(R.id.refresher);
         refreshLayout.setEnableKeepRefreshView(true);
